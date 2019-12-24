@@ -20,7 +20,8 @@ module.exports = {
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+      : config.dev.assetsPublicPath,
+      sourcePrefix: ''
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -66,7 +67,9 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
-    ]
+    ],
+    //unknownContextRegExp: /^.\/.*$/,
+    unknownContextCritical: false
   },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
