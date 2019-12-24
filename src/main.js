@@ -3,6 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Cesium from 'cesium/Cesium'
+import 'cesium/Widgets/widgets.css'
+ 
+ 
+Vue.prototype.Cesium=Cesium;
 
 Vue.config.productionTip = false
 
