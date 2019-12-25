@@ -8,6 +8,7 @@ import 'cesium/Widgets/widgets.css'
  
  
 Vue.prototype.Cesium=Cesium;
+//Window.Cesium = Cesium;
 
 Vue.config.productionTip = false
 

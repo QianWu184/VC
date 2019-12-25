@@ -21,11 +21,15 @@ module.exports = {
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath,
+<<<<<<< HEAD
     sourcePrefix: ' ' 	//正确缩进多行字符串
   },
   amd: {
     // Enable webpack-friendly use of require in cesium
     toUrlUndefined: true
+=======
+      sourcePrefix: ''
+>>>>>>> b83bc6787544470ca3d48a4375f512f006fb9394
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -70,9 +74,15 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+<<<<<<< HEAD
       },
     ],
     //不让webpa打印载入特定库时候的警告
+=======
+      }
+    ],
+    //unknownContextRegExp: /^.\/.*$/,
+>>>>>>> b83bc6787544470ca3d48a4375f512f006fb9394
     unknownContextCritical: false
   },
   node: {
