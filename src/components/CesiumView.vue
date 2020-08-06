@@ -1,29 +1,31 @@
 <template>
   <div id="map">
+    <Menu></Menu>
     <div id="cesiumContainer"></div>
-    <i-modal class="sdasd"
-        v-model="messageModel"
-        title="个人信息"
-        width="300"
-        style="text-align:center">
-        <Avatar icon="ios-person" size="large" />
-        <div class="user-message user-name">{{name}}</div>
-        <div class="user-message">{{skills.join(',')}}</div>
-        <div class="user-message">{{email}}</div>
-        <div slot="footer">
-            <i-button  type="primary" @click="cancel">确定</i-button>
-        </div>
-    </i-modal>
+    <Modal
+      class="sdasd"
+      v-model="messageModel"
+      title="个人信息"
+      width="300"
+      style="text-align:center"
+    >
+      <Avatar icon="ios-person" size="large" />
+      <div class="user-message user-name">{{ name }}</div>
+      <div class="user-message">{{ skills.join(",") }}</div>
+      <div class="user-message">{{ email }}</div>
+      <div slot="footer">
+        <Button type="primary" @click="cancel">确定</Button>
+      </div>
+    </Modal>
   </div>
 </template>
- 
-<script>
-let Cesium = require('cesium/Cesium');
-import data from "../datas/user";
-import { author } from './author.js'
-import {parabolaEquation} from '../util/common.js'
-import PolylineTrailMaterialProperty from './cesium/dyPolyline.js'
 
+<script>
+import data from "../datas/user";
+import { author } from "./cesium/components";
+import Menu from "./menu/Menu";
+import { parabolaEquation } from "../util/common.js";
+import PolylineTrailMaterialProperty from "../util/cesium/dyPolyline.js";
 
 // 导出组件
 export default {
@@ -74,104 +76,105 @@ export default {
       //   url:"/static/images/earth3.jpg"
       // }))
       //标注层
-      this.viewer.imageryLayers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
-        url: "http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8"
-      }))
-      let point = Cesium.Cartesian3.fromDegrees(104.071216, 30.663049, 15000000.0);
+      this.viewer.imageryLayers.addImageryProvider(
+        new Cesium.UrlTemplateImageryProvider({
+          url:
+            "http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8"
+        })
+      );
+      let point = Cesium.Cartesian3.fromDegrees(
+        104.071216,
+        30.663049,
+        15000000.0
+      );
       let point2 = Cesium.Cartesian3.fromDegrees(104.071216, 30.663049, 0);
-      let C_author = author(Cesium);
+      let C_author = author();
       this.iniEventHandler(this.viewer);
       this.viewer.entities.add({
         position: point2,
         billboard: C_author
-      })
+      });
       this.viewer.camera.setView({
-        destination: point,
+        destination: point
       });
       this.addLine();
     });
   },
   methods: {
     showUserPanel(show) {
-      this.showUser = !show
+      this.showUser = !show;
     },
     iniEventHandler(viewer) {
       let handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
       let that = this;
-      handler.setInputAction(function (event) {
-        let earthPosition = viewer.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
+      handler.setInputAction(function(event) {
+        let earthPosition = viewer.camera.pickEllipsoid(
+          event.position,
+          viewer.scene.globe.ellipsoid
+        );
         if (Cesium.defined(earthPosition)) {
           that.messageModel = true;
         }
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     },
-    addLine(){
-      let pt1 = {lon:102.2,
-                  lat:30.1}
-      let pt2 = {lon:105.2,
-                  lat:36.1}
-      let position = parabolaEquation(pt1, pt2,{num:50, height: 100000});
-      console.log(position)
+    addLine() {
+      let pt1 = { lon: 102.2, lat: 30.1 };
+      let pt2 = { lon: 105.2, lat: 36.1 };
+      let position = parabolaEquation(pt1, pt2, { num: 50, height: 100000 });
       let material = new Cesium.PolylineTrailMaterialProperty({
+        duration: 3000,
+        trailImage: "../static/images/color1.png"
+      });
 
-          //color: Cesium.Color.GREEN,
+      this.viewer.entities.add({
+        polyline: {
+          positions: Cesium.Cartesian3.fromDegreesArrayHeights(position),
 
-          duration: 3000,
+          width: 2,
 
-          trailImage: "../static/images/color1.png"
-
-        });
-
-        this.viewer.entities.add({
-
-          polyline: {
-
-            positions: Cesium.Cartesian3.fromDegreesArrayHeights(position),
-
-            width: 2,
-
-            material: material
-
-          }
-
-        })
+          material: material
+        }
+      });
     },
-    cancel(){
+    cancel() {
       this.messageModel = false;
     }
+  },
+  components:{
+    Menu:Menu
   }
 };
 </script>
- 
+
 <style scoped>
 #map,
 #cesiumContainer {
-	position: relative;
-	font-family: "Avenir", Helvetica, Arial, sans-serif;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+  position: relative;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 .userPanel {
-	position: absolute;
-	left: 40px;
-	top: 50px;
-	transition-property: top;
-	transition-duration: 1.5s;
+  position: absolute;
+  left: 40px;
+  top: 50px;
+  transition-property: top;
+  transition-duration: 1.5s;
 }
 .disapper {
-	animation: hiddenserPanel 1.5s;
-	top: -200px;
+  animation: hiddenserPanel 1.5s;
+  top: -200px;
 }
 @keyframes hiddenserPanel {
-	0% {
-		top: 50px;
-	}
-	10% {
-		top: 60px;
-	}
-	100% {
-		top: -200px;
-	}
+  0% {
+    top: 50px;
+  }
+  10% {
+    top: 60px;
+  }
+  100% {
+    top: -200px;
+  }
 }
 </style>

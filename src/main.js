@@ -4,17 +4,15 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-import {Button, Avatar, Icon, Modal } from 'iview'
+import iView from 'iview';
 import 'cesium/Widgets/widgets.css'
 import 'iview/dist/styles/iview.css';
-
-Vue.component('Avatar', Avatar)
-Vue.component('i-icon', Icon)
-Vue.component('i-modal', Modal)
-Vue.component('i-button', Button)
+import './assets/css/index.css'
 
 
 Vue.config.productionTip = false
+
+Vue.use(iView);
 
 /* eslint-disable no-new */
 new Vue({
