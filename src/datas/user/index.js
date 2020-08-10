@@ -1,7 +1,7 @@
 export default {
   name: '吴谦',
-  photoUrl: '',
-  age: 25,
+  photoUrl: '18408248654',
+  age: 26,
   email: '18408248654@163.com',
   location: {
     place: '成都',
@@ -9,8 +9,15 @@ export default {
   },
   
   skills: [
-    'web前端',
-    'gis开发',
+    'vue.js',
+    'openlayer',
+    'cesium',
+    'java',
+    'arcgis',
+    'react',
+    'geoserver',
+    'spring boot',
+    '百度地图'
   ],
   infos: [
     {

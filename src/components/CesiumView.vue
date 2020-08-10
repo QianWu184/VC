@@ -1,27 +1,12 @@
 <template>
   <div id="map">
-    <Menu></Menu>
+    <Menu :userData="userData"></Menu>
     <div id="cesiumContainer"></div>
-    <Modal
-      class="sdasd"
-      v-model="messageModel"
-      title="个人信息"
-      width="300"
-      style="text-align:center"
-    >
-      <Avatar icon="ios-person" size="large" />
-      <div class="user-message user-name">{{ name }}</div>
-      <div class="user-message">{{ skills.join(",") }}</div>
-      <div class="user-message">{{ email }}</div>
-      <div slot="footer">
-        <Button type="primary" @click="cancel">确定</Button>
-      </div>
-    </Modal>
   </div>
 </template>
 
 <script>
-import data from "../datas/user";
+import userData from "../datas/user";
 import { author } from "./cesium/components";
 import Menu from "./menu/Menu";
 import { parabolaEquation } from "../util/common.js";
@@ -32,8 +17,7 @@ export default {
   name: "cesiumView",
   data() {
     return {
-      ...data,
-      messageModel: false
+      userData,
     };
   },
   mounted() {
@@ -101,9 +85,6 @@ export default {
     });
   },
   methods: {
-    showUserPanel(show) {
-      this.showUser = !show;
-    },
     iniEventHandler(viewer) {
       let handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
       let that = this;
@@ -136,9 +117,6 @@ export default {
         }
       });
     },
-    cancel() {
-      this.messageModel = false;
-    }
   },
   components:{
     Menu:Menu

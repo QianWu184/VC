@@ -1,7 +1,9 @@
 <template>
   <div id="menu">
     <Tabs class="menu-tabs" size="small">
-      <Tab-pane class="tab-pane" label="个人简介"> </Tab-pane>
+      <Tab-pane class="tab-pane" label="个人简介">
+        <Info :userData="userData"></Info>
+      </Tab-pane>
       <Tab-pane class="tab-pane" label="工作经历">
         <MessageCard></MessageCard>
       </Tab-pane>
@@ -11,13 +13,21 @@
 </template>
 <script>
 import MessageCard from "./MessageCard";
+import Info from './Info'
 export default {
   name: "",
+  props:{
+    userData: {
+      type: Object,
+      request: true
+    }
+  },
   data() {
     return {};
   },
   components: {
-    MessageCard
+    MessageCard,
+    Info
   }
 };
 </script>
