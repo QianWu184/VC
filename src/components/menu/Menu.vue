@@ -1,11 +1,18 @@
 <template>
   <div id="menu">
-    <Tabs class="menu-tabs" size="small">
+    <Tabs class="menu-tabs" size="small" v-model="selectTabs">
       <Tab-pane class="tab-pane" label="个人简介">
         <Info :userData="userData"></Info>
       </Tab-pane>
       <Tab-pane class="tab-pane" label="工作经历">
-        <MessageCard></MessageCard>
+        <div>
+          <MessageCard
+            v-for="(item, index) in userData.infos"
+            :key="index"
+            :workInfo="item"
+            @click.native="changeChart(item, index)"
+          ></MessageCard>
+        </div>
       </Tab-pane>
       <Tab-pane class="tab-pane" label="其他"> </Tab-pane>
     </Tabs>
@@ -13,30 +20,49 @@
 </template>
 <script>
 import MessageCard from "./MessageCard";
-import Info from './Info'
+import Info from "./Info";
 export default {
   name: "",
-  props:{
+  props: {
     userData: {
       type: Object,
       request: true
     }
   },
   data() {
-    return {};
+    return {
+      selectTabs: 1,
+      showSelf: false,
+      selectWorkIndex: 0
+    };
   },
   components: {
     MessageCard,
     Info
+  },
+  methods: {
+    chartPaneTrigger(index) {
+      if (!this.showSelf || this.selectWorkIndex == index) {
+        this.showSelf = !this.showSelf;
+        this.$emit("chartPaneTrigger", this.showSelf);
+      } 
+    },
+    changeChart(work, index){
+      this.chartPaneTrigger(index);
+      if(this.selectWorkIndex !=index){
+        this.selectWorkIndex = index;
+         this.$emit("showWork", work)
+      }
+    }
   }
 };
 </script>
 <style scoped>
 #menu {
   width: 300px;
-  height: 600px;
+  height: 800px;
   position: absolute;
-  top: 20px;
+  top: 50px;
   left: 20px;
   z-index: 1000;
   background-color: #ffffff;
@@ -49,7 +75,7 @@ export default {
 .menu-tabs {
   padding: 0 5px;
 }
-.tab-pane{
+.tab-pane {
   width: 100%;
   height: 100%;
 }

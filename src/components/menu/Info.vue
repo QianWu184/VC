@@ -1,6 +1,6 @@
 <template>
   <div id = "userInfo">
-    <Avatar  icon="ios-person" size="large"></Avatar>
+    <Avatar  :src='imageUrl' size="large"></Avatar>
     <div class="user-detail">
       <h3>{{userData.name}}</h3>
       <h4>{{userData.age}}岁|{{userData.location.place}}</h4>
@@ -24,6 +24,7 @@ export default {
   },
   data(){
     return {
+      imageUrl: require("@/assets/images/author2.jpg"),
       message: ' 这是一段文字'
     }
   },

@@ -1,6 +1,7 @@
 <template>
   <div id="map">
-    <Menu :userData="userData"></Menu>
+    <Menu :userData="userData"  @chartPaneTrigger = "chartPaneTrigger" @showWork = "showWork"></Menu>
+    <ChartPane v-show="showChartPane"></ChartPane>
     <div id="cesiumContainer"></div>
   </div>
 </template>
@@ -9,6 +10,7 @@
 import userData from "../datas/user";
 import { author } from "./cesium/components";
 import Menu from "./menu/Menu";
+import ChartPane from "./chart/Pane";
 import { parabolaEquation } from "../util/common.js";
 import PolylineTrailMaterialProperty from "../util/cesium/dyPolyline.js";
 
@@ -18,6 +20,8 @@ export default {
   data() {
     return {
       userData,
+      showChartPane: false,
+      workInfo: null
     };
   },
   mounted() {
@@ -117,9 +121,16 @@ export default {
         }
       });
     },
+    chartPaneTrigger(bool){
+      (bool==undefined || bool == null)?this.showChartPane = !this.showChartPane :this.showChartPane = bool;
+    },
+    showWork(workInfo){
+      
+    }
   },
   components:{
-    Menu:Menu
+    Menu,
+    ChartPane
   }
 };
 </script>
