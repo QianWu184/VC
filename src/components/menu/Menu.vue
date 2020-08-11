@@ -10,6 +10,7 @@
             v-for="(item, index) in userData.infos"
             :key="index"
             :workInfo="item"
+            :workNum="index"
             @click.native="changeChart(item, index)"
           ></MessageCard>
         </div>
@@ -45,14 +46,17 @@ export default {
       if (!this.showSelf || this.selectWorkIndex == index) {
         this.showSelf = !this.showSelf;
         this.$emit("chartPaneTrigger", this.showSelf);
-      } 
-    },
-    changeChart(work, index){
-      this.chartPaneTrigger(index);
-      if(this.selectWorkIndex !=index){
-        this.selectWorkIndex = index;
-         this.$emit("showWork", work)
       }
+    },
+    changeChart(work, index) {
+      this.chartPaneTrigger(index);
+      if (this.selectWorkIndex != index) {
+        this.selectWorkIndex = index;
+        this.showWork(work);
+      }
+    },
+    showWork(work) {
+      this.$emit("showWork", work);
     }
   }
 };

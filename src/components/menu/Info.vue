@@ -9,6 +9,7 @@
       <div>
          <Tag v-for="(item, index ) in userData.skills" :key="index" :color="randomColor()">{{item}}</Tag>
       </div>
+      <h4>{{userData.stetment}}</h4>
     </div>
   </div>
 </template>
@@ -48,6 +49,7 @@ export default {
 <style scoped>
 #userInfo{
   width:100%;
+  margin-top: 20px;
   text-align: center;
 }
 .user-detail{
