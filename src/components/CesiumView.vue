@@ -13,6 +13,7 @@ import Menu from "./menu/Menu";
 import ChartPane from "./chart/Pane";
 import { parabolaEquation } from "../util/common.js";
 import PolylineTrailMaterialProperty from "../util/cesium/dyPolyline.js";
+import { mapMutations } from 'vuex'
 
 // 导出组件
 export default {
@@ -21,7 +22,8 @@ export default {
     return {
       userData,
       showChartPane: false,
-      workInfo: null
+      workInfo: null,
+      viewer: null
     };
   },
   mounted() {
@@ -70,6 +72,7 @@ export default {
             "http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8"
         })
       );
+      this.setCesiumViewer(this.viewer)
       let point = Cesium.Cartesian3.fromDegrees(
         104.071216,
         30.663049,
@@ -89,10 +92,14 @@ export default {
     });
   },
   methods: {
+      ...mapMutations([
+      'setCesiumViewer', 
+    ]),
     iniEventHandler(viewer) {
       let handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
       let that = this;
       handler.setInputAction(function(event) {
+        console.log(event.position)
         let earthPosition = viewer.camera.pickEllipsoid(
           event.position,
           viewer.scene.globe.ellipsoid
@@ -126,6 +133,17 @@ export default {
     },
     showWork(workInfo){
       this.workInfo = workInfo;
+      this.flyToPosition(workInfo)
+    },
+    flyToPosition(workInfo){
+        if(!this.viewer){
+          return
+        }
+        let {lon, lat} = workInfo;
+        this.viewer.camera.flyTo({
+          destination:  Cesium.Cartesian3.fromDegrees(lon, lat, 1500),
+          duration: 1.5
+        })
     }
   },
   components:{

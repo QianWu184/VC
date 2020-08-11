@@ -25,8 +25,8 @@ export default {
   infos: [
     {
       name: "北京大陆康腾科技股份有限公司",
-      lon: 104.071738,
-      lat: 30.560983,
+      lon: 104.0624426,
+      lat: 30.5570864,
       startTime: "2019-1",
       endTime: "至今",
       url: "http://www.cont.com.cn/",
@@ -59,8 +59,8 @@ export default {
     },
     {
       name: "万江港利科技股份有限公司",
-      lon: 104.067894,
-      lat: 30.573747,
+      lon: 104.0597925,
+      lat: 30.5700384,
       startTime: "2017-7",
       endTime: "2018-12",
       url: "http://www.cdwanjiang.com/pages/index/index.html?src=0",
@@ -90,8 +90,8 @@ export default {
     },
     {
       name: "新电信息科技股份有限公司",
-      lon: 104.077712,
-      lat: 30.550883,
+      lon:  104.0678123,
+      lat: 30.5481936,
       startTime: "2016-10",
       endTime: "2017-7",
       url: "https://www.ncsi.com.cn/public/ncs/en.html",

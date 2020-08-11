@@ -20,23 +20,27 @@ export default {
       baseData: [
         {
           name: "前端开发",
-          value: 4,
+          value: 8,
           children: [
             {
-              name: "gis开发",
-              value: 4,
+              name: "webgis",
+              value: 7,
               children: [
                 {
                   name: "geoserver",
                   value: 2
                 },
                 {
-                  name: "arcgisserver",
+                  name: "arcgis\nserver",
                   value: 1
                 },
                 {
-                  name: "arcgis js",
+                  name: "arcgis\njs",
                   value: 1
+                },
+                {
+                  name: "cesium",
+                  value: 1,
                 },
                 {
                   name: "openlayer",
@@ -45,23 +49,23 @@ export default {
               ]
             },
             {
-              name: "vue开发",
+              name: "vue.js",
               value: 1
             }
           ]
         },
         {
-          name: "java开发",
+          name: "java",
           value: 1,
           children: [
             {
-              name: "spring boot",
+              name: "spring\nboot",
               value: 1
             }
           ]
         },
         {
-          name: "c#开发",
+          name: "C#",
           value: 2,
           children: [
             {
@@ -69,7 +73,7 @@ export default {
               value: 1
             },
             {
-              name: ".net core",
+              name: "net\ncore",
               value: 1
             }
           ]
@@ -126,23 +130,27 @@ export default {
   },
   mounted() {
     let option = {
+      title: {
+          text: "技术图谱",
+        },
+      legend: {
+        show: false
+      },
       visualMap: {
         type: "continuous",
+        show: false,
         min: 0,
         max: 10,
         inRange: {
           color: ["#2D5F73", "#538EA6", "#F2D1B3", "#F2B8A2", "#F28C8C"]
         }
       },
-      legend: {
-        show: false
-      },
       series: {
         type: "sunburst",
         data: this.baseData,
-        radius: [0, "90%"],
+        radius: [0, "100%"],
         label: {
-          rotate: "radial"
+          rotate: "0"
         }
       }
     };
@@ -152,7 +160,7 @@ export default {
   },
   watch: {
     workInfo: function(newVal, olVal) {
-      if (newVal.name !== olVal.name) {
+      if (!olVal || newVal.name !== olVal.name) {
         this.workInfo = newVal;
         this.init();
       }

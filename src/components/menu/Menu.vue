@@ -34,12 +34,15 @@ export default {
     return {
       selectTabs: 1,
       showSelf: false,
-      selectWorkIndex: 0
+      selectWorkIndex: null
     };
   },
   components: {
     MessageCard,
     Info
+  },
+  mounted(){
+    this.showWork(this.userData.infos[0])
   },
   methods: {
     chartPaneTrigger(index) {
