@@ -38,6 +38,7 @@ export default {
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
   text-align: center;
+  cursor: pointer;
 }
 .content {
   padding: 0px 10px;

@@ -1,7 +1,7 @@
 <template>
   <div id="map">
     <Menu :userData="userData"  @chartPaneTrigger = "chartPaneTrigger" @showWork = "showWork"></Menu>
-    <ChartPane v-show="showChartPane"></ChartPane>
+    <ChartPane v-show="showChartPane" :workInfo="workInfo"></ChartPane>
     <div id="cesiumContainer"></div>
   </div>
 </template>
@@ -125,7 +125,7 @@ export default {
       (bool==undefined || bool == null)?this.showChartPane = !this.showChartPane :this.showChartPane = bool;
     },
     showWork(workInfo){
-      
+      this.workInfo = workInfo;
     }
   },
   components:{
