@@ -11,7 +11,7 @@ import userData from "../datas/user";
 import { author } from "./cesium/components";
 import Menu from "./menu/Menu";
 import ChartPane from "./chart/Pane";
-import { parabolaEquation } from "../util/common.js";
+import { parabolaEquation, cartesian3Todegrees } from "../util/common.js";
 import PolylineTrailMaterialProperty from "../util/cesium/dyPolyline.js";
 import { mapMutations } from 'vuex'
 
@@ -73,12 +73,13 @@ export default {
         })
       );
       this.setCesiumViewer(this.viewer)
+      console.log([userData.home.lon, userData.home.lat])
       let point = Cesium.Cartesian3.fromDegrees(
         104.071216,
         30.663049,
         15000000.0
       );
-      let point2 = Cesium.Cartesian3.fromDegrees(104.071216, 30.663049, 0);
+      let point2 = Cesium.Cartesian3.fromDegrees(userData.home.lon, userData.home.lat, 0);
       let C_author = author();
       this.iniEventHandler(this.viewer);
       this.viewer.entities.add({
@@ -88,7 +89,6 @@ export default {
       this.viewer.camera.setView({
         destination: point
       });
-      this.addLine();
     });
   },
   methods: {
@@ -99,7 +99,6 @@ export default {
       let handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
       let that = this;
       handler.setInputAction(function(event) {
-        console.log(event.position)
         let earthPosition = viewer.camera.pickEllipsoid(
           event.position,
           viewer.scene.globe.ellipsoid
@@ -109,21 +108,22 @@ export default {
         }
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     },
-    addLine() {
-      let pt1 = { lon: 102.2, lat: 30.1 };
-      let pt2 = { lon: 105.2, lat: 36.1 };
-      let position = parabolaEquation(pt1, pt2, { num: 50, height: 100000 });
+    addLine(pt2 =  { lon: 105.2, lat: 36.1 }) {
+      let pt1 = userData.home;
+      let position = parabolaEquation(pt1, pt2, { num: 50, height: 50 });
       let material = new Cesium.PolylineTrailMaterialProperty({
         duration: 3000,
         trailImage: "../static/images/color1.png"
       });
-
+      let line = this.viewer.entities.getById('dyLine');
+      if(line != null && line != undefined){
+        this.viewer.entities.remove(line);
+      }
       this.viewer.entities.add({
+        id:'dyLine',
         polyline: {
           positions: Cesium.Cartesian3.fromDegreesArrayHeights(position),
-
-          width: 2,
-
+          width: 5,
           material: material
         }
       });
@@ -133,6 +133,7 @@ export default {
     },
     showWork(workInfo){
       this.workInfo = workInfo;
+     
       this.flyToPosition(workInfo)
     },
     flyToPosition(workInfo){
@@ -140,8 +141,9 @@ export default {
           return
         }
         let {lon, lat} = workInfo;
+        this.addLine({lon, lat})
         this.viewer.camera.flyTo({
-          destination:  Cesium.Cartesian3.fromDegrees(lon, lat, 1500),
+          destination:  Cesium.Cartesian3.fromDegrees(lon, lat, 3000),
           duration: 1.5
         })
     }

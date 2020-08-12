@@ -11,6 +11,7 @@
             :key="index"
             :workInfo="item"
             :workNum="index"
+            :selectWorkIndex = "selectWorkIndex"
             @click.native="changeChart(item, index)"
           ></MessageCard>
         </div>

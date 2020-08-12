@@ -4,7 +4,7 @@
       <h3 class="company-name">
       <a :href="workInfo.url" target="_blank">{{ workInfo.name }}</a> 
     </h3>
-      <Icon type="ios-flag"  size="30" color="#2d8cf0"/>
+      <Icon type="ios-flag"  size="30" :color="selected?'#2d8cf0': ''"/>
     </div>
     <p>{{ workInfo.startTime }}~{{ workInfo.endTime }}</p>
     <div class="content">{{ workInfo.message }}</div>
@@ -21,12 +21,24 @@ export default {
     workNum:{
       type: Number,
       request: true
+    },
+    selectWorkIndex:{
+      type: Number,
+      request :true
     }
   },
   data() {
     return {};
   },
   methods:{
+    selectedSelf(){
+      this.selected = true
+    } 
+  },
+  computed:{
+      selected:function(){
+        return this.selectWorkIndex == this.workNum
+      }
   }
 };
 </script>

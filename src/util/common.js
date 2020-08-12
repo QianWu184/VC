@@ -1,3 +1,5 @@
+import { ln } from "shelljs";
+
 /**
  * 两点抛物线
  * @param {*} pt1 
@@ -8,7 +10,7 @@ export function parabolaEquation(pt1, pt2, options) {
 
   //方程 y=-(4h/L^2)*x^2+h h:顶点高度 L：横纵间距较大者
 
-  var h = options && options.height && options.height > 5000 ? options.height : 5000;
+  var h = options && options.height && options.height > 100 ? options.height : 100;
 
   var L = Math.abs(pt1.lon - pt2.lon) > Math.abs(pt1.lat - pt2.lat) ? Math.abs(pt1.lon - pt2.lon) : Math.abs(pt1.lat - pt2.lat);
 
@@ -76,4 +78,14 @@ export function parabolaEquation(pt1, pt2, options) {
 
   return result;
 
+}
+
+export function cartesian3Todegrees(viewer, cartesian){
+  var earthPosition  = viewer.camera.pickEllipsoid(cartesian,viewer.scene.globe.ellipsoid);
+  var cartographic = Cesium.Cartographic.fromCartesian(earthPosition, viewer.scene.globe.ellipsoid, new Cesium.Cartographic());
+  var lat=Cesium.Math.toDegrees(cartographic.latitude);
+  var lng=Cesium.Math.toDegrees(cartographic.longitude);
+  var height=cartographic.height;
+
+  return [lng, lat, height]
 }
