@@ -11,12 +11,18 @@
             :key="index"
             :workInfo="item"
             :workNum="index"
-            :selectWorkIndex = "selectWorkIndex"
+            :selectWorkIndex="selectWorkIndex"
             @click.native="changeChart(item, index)"
           ></MessageCard>
         </div>
       </Tab-pane>
-      <Tab-pane class="tab-pane" label="其他"> </Tab-pane>
+      <Tab-pane class="tab-pane" label="其他">
+        <div class="toWebgl">
+          <router-link to="/webGL">
+            <i-button type="success">去看看WebGL</i-button>
+          </router-link>
+        </div>
+      </Tab-pane>
     </Tabs>
   </div>
 </template>
@@ -33,7 +39,7 @@ export default {
   },
   data() {
     return {
-      selectTabs: 1,
+      selectTabs: 2,
       showSelf: false,
       selectWorkIndex: null
     };
@@ -42,8 +48,8 @@ export default {
     MessageCard,
     Info
   },
-  mounted(){
-    this.showWork(this.userData.infos[0])
+  mounted() {
+    this.showWork(this.userData.infos[0]);
   },
   methods: {
     chartPaneTrigger(index) {
@@ -86,5 +92,9 @@ export default {
 .tab-pane {
   width: 100%;
   height: 100%;
+}
+.toWebgl {
+  text-align: center;
+  margin-top: 200px;
 }
 </style>
