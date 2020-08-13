@@ -1,5 +1,5 @@
 <template>
-  <div id="webgl"></div>
+  <div id="webgl" refs="webgl"></div>
 </template>
 <script>
 export default {
@@ -9,10 +9,19 @@ export default {
       scene: null,
       camera: null,
       render: null,
-      count: 0
+      count: 0,
+      left: false
     };
   },
   mounted() {
+    window.addEventListener("resize", ()=>{
+      let refPane = document.getElementById("webgl");
+      if (refPane) {
+        this.camera.aspect = refPane.offsetWidth / refPane.offsetHeight;
+        this.camera.updateProjectionMatrix();
+        this.render.setSize(refPane.offsetWidth, refPane.offsetHeight);
+      }
+    }, false);
     this.init();
     this.animate();
   },
@@ -53,16 +62,17 @@ export default {
       if (cube) {
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
-        if (this.count <= 0) {
+        if (this.left) {
           cube.position.x += 0.01;
-          cube.position.y += 0.01;
           cube.position.z += 0.01;
-          this.count+=1;
-        } else if(this.count >100){
+        } else {
           cube.position.x -= 0.01;
-          cube.position.y -= 0.01;
           cube.position.z -= 0.01;
-          this.count-=1;
+        }
+        this.count++;
+        if (this.count > 100) {
+          this.count = 0;
+          this.left = !this.left;
         }
       }
       this.render.render(this.scene, this.camera);
