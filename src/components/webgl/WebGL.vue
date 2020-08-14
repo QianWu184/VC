@@ -10,18 +10,23 @@ export default {
       camera: null,
       render: null,
       count: 0,
-      left: false
+      left: false,
+      smokeParticles: []
     };
   },
   mounted() {
-    window.addEventListener("resize", ()=>{
-      let refPane = document.getElementById("webgl");
-      if (refPane) {
-        this.camera.aspect = refPane.offsetWidth / refPane.offsetHeight;
-        this.camera.updateProjectionMatrix();
-        this.render.setSize(refPane.offsetWidth, refPane.offsetHeight);
-      }
-    }, false);
+    window.addEventListener(
+      "resize",
+      () => {
+        let refPane = document.getElementById("webgl");
+        if (refPane) {
+          this.camera.aspect = refPane.offsetWidth / refPane.offsetHeight;
+          this.camera.updateProjectionMatrix();
+          this.render.setSize(refPane.offsetWidth, refPane.offsetHeight);
+        }
+      },
+      false
+    );
     this.init();
     this.animate();
   },
@@ -37,11 +42,16 @@ export default {
         1000
       );
       this.camera = camera;
+      this.camera.position.z = 30;
       let renderer = new THREE.WebGLRenderer();
       this.render = renderer;
       renderer.setSize(refPane.offsetWidth, refPane.offsetHeight);
       refPane.appendChild(renderer.domElement);
+      
+      scene.fog = new THREE.FogExp2( 0xefd1b5, 0.0025 )
+
       this.addBox();
+      //this.addSmoke();
     },
     addBox() {
       let geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -55,7 +65,37 @@ export default {
       material.map = texture;
       cube.name = "testCube";
       this.scene.add(cube);
-      this.camera.position.z = 10;
+    },
+    addSmoke() {
+      let smokeTexture = new THREE.TextureLoader().load(
+        "../static/images/smoke.png"
+      );
+      // let smokeMaterial = new THREE.MeshLambertMaterial({
+      //   color: 0x00dddd,
+      //   map: smokeTexture,
+      //   transparent: true
+      // });
+      var material = new THREE.MeshBasicMaterial( {
+        olor: 0x00dddd,
+        } );
+      let smokeGeo = new THREE.PlaneGeometry(1, 1);
+      for (let i = 0; i < 50; i++) {
+        let particle = new THREE.Mesh(smokeGeo, material);
+        particle.position.set(
+          Math.random() * 10 - 5,
+          Math.random() * 10 - 5,
+          Math.random() * 100 - 50
+        );
+        particle.rotation.z = Math.random() * 10;
+        this.scene.add(particle);
+        this.smokeParticles.push(particle);
+      }
+    },
+    moveSmoke() {
+      var sp = this.smokeParticles.length;
+      while (sp--) {
+        this.smokeParticles[sp].rotation.z += 0.01 * 0.2;
+      }
     },
     animate() {
       let cube = this.scene.getObjectByName("testCube");
@@ -76,6 +116,7 @@ export default {
         }
       }
       this.render.render(this.scene, this.camera);
+      this.moveSmoke();
       requestAnimationFrame(this.animate.bind(this));
     }
   }
