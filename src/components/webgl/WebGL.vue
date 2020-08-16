@@ -47,11 +47,12 @@ export default {
       this.render = renderer;
       renderer.setSize(refPane.offsetWidth, refPane.offsetHeight);
       refPane.appendChild(renderer.domElement);
-      
-      scene.fog = new THREE.FogExp2( 0xefd1b5, 0.0025 )
+      let light = new THREE.DirectionalLight(0xffffff, 1);
+      light.position.set(20, 20, 20);
+      scene.add(light);
 
       this.addBox();
-      //this.addSmoke();
+      this.addSmoke();
     },
     addBox() {
       let geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -67,29 +68,49 @@ export default {
       this.scene.add(cube);
     },
     addSmoke() {
-      let smokeTexture = new THREE.TextureLoader().load(
-        "../static/images/smoke.png"
+      // let smokeTexture = new THREE.TextureLoader().load(
+      //   "../static/images/timg.jpg"
+      // );
+      // 初始化一个加载器
+      var loader = new THREE.TextureLoader();
+
+      // 加载一个资源
+      loader.load(
+        // 资源URL
+         "../static/images/timg.jpg",
+
+        // onLoad回调
+        function(texture) {
+           let smokeMaterial = new THREE.MeshLambertMaterial({
+          color: 0x00dddd,
+          map: texture,
+          transparent: true
+        });
+
+        let smokeGeo = new THREE.PlaneGeometry(5, 5);
+        for (let i = 0; i < 50; i++) {
+          let particle = new THREE.Mesh(smokeGeo, smokeMaterial);
+          particle.position.set(
+            Math.random() * 10 - 5,
+            Math.random() * 10 - 5,
+            Math.random() * 100 - 50
+          );
+          particle.rotation.z = Math.random() * 10;
+          this.scene.add(particle);
+          this.smokeParticles.push(particle);
+        }
+        },
+
+        // 目前暂不支持onProgress的回调
+        undefined,
+
+        // onError回调
+        function(err) {
+          console.log(err);
+        }
       );
-      // let smokeMaterial = new THREE.MeshLambertMaterial({
-      //   color: 0x00dddd,
-      //   map: smokeTexture,
-      //   transparent: true
-      // });
-      var material = new THREE.MeshBasicMaterial( {
-        olor: 0x00dddd,
-        } );
-      let smokeGeo = new THREE.PlaneGeometry(1, 1);
-      for (let i = 0; i < 50; i++) {
-        let particle = new THREE.Mesh(smokeGeo, material);
-        particle.position.set(
-          Math.random() * 10 - 5,
-          Math.random() * 10 - 5,
-          Math.random() * 100 - 50
-        );
-        particle.rotation.z = Math.random() * 10;
-        this.scene.add(particle);
-        this.smokeParticles.push(particle);
-      }
+
+    
     },
     moveSmoke() {
       var sp = this.smokeParticles.length;
